@@ -40,7 +40,10 @@ MagicMirror² Module to display public transport from Ingolstadt in Germany.
 -   **customURL**: The URL to use if `overwriteIP` is `true`.
 -   **customPort**: The port to use if `overwriteIP` is `true`.
 
-#
+#### Why use `overwriteIP`?
+
+The `overwriteIP` setting is helpful if the MagicMirror's automatic IP and port detection does not work as expected. By default, the module attempts to detect and use the MagicMirror's IP and port for the API request. However, in certain network setups or configurations, the automatic detection may fail. Enabling `overwriteIP` allows you to manually specify a custom URL and port for the CORS request, ensuring that the module can still retrieve the required data without issues.
+
 
 ### Displaying Planned Departures
 
