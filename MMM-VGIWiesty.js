@@ -4,8 +4,11 @@ Module.register("MMM-VGIWiesty", {
         station: "IN-ZOB",
         overwriteIP: false,
         customURL: "",
-        customPort: ""                  
+        customPort: ""
     },
+
+    maxRetries: 5,
+    retryCount: 0,
 
     start: function () {
         Log.info('%cMMM-VGIWiesty loaded.', 'background: #0085c2; color: #6ac000');
@@ -93,31 +96,53 @@ Module.register("MMM-VGIWiesty", {
         }
 
         var url = `${baseUrl}https://www.vgi.de/rt/getRealtimeData.action?stopPoint=1&station=${station}&sid=`;
-        Log.info(url); 
+        // Log.info(url); for debugging only
+
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
+                    // Log.info(xhr.responseText); for debugging only
                     try {
                         var sanitizedResponseText = xhr.responseText.replace(/[^\x20-\x7E]+/g, "");
                         var response = JSON.parse(sanitizedResponseText);
-                        if (response && response.departures && response.departures.length > 0) {
+                        
+                        if (response.error) {
+                            Log.warn("MMM-VGIWiesty: API returned an error. Retrying...");
+                            self.retryFetch();
+                        } else if (response && response.departures && response.departures.length > 0) {
                             self.departures = response.departures;
+                            self.retryCount = 0; 
                             self.updateDom();
+                        } else {
+                            Log.error("MMM-VGIWiesty: Unexpected API response format.");
                         }
                     } catch (error) {
                         Log.error("MMM-VGIWiesty: JSON Parsing Error:", error);
                         Log.error("Sanitized Response was:", sanitizedResponseText);
+                        self.retryFetch();
                     }
                 } else {
                     Log.error("MMM-VGIWiesty: Failed to load departures. Status:", xhr.status);
                     Log.error("Response was:", xhr.responseText);
+                    self.retryFetch();
                 }
             }
         };
-               
+
         xhr.send();
+    },
+
+    retryFetch: function () {
+        if (this.retryCount < this.maxRetries) {
+            this.retryCount++;
+            Log.warn(`MMM-VGIWiesty: Retrying fetch (${this.retryCount}/${this.maxRetries})...`);
+            this.loadDepartures();
+        } else {
+            Log.error("MMM-VGIWiesty: Max retries reached. No further attempts.");
+            this.retryCount = 0; // Reset retry count after max attempts
+        }
     },
 
     scheduleUpdate: function () {
