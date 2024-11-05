@@ -7,7 +7,7 @@ Module.register("MMM-VGIWiesty", {
         customPort: ""
     },
 
-    maxRetries: 5,
+    maxRetries: 3,
     retryCount: 0,
 
     start: function () {

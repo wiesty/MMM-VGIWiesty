@@ -40,6 +40,19 @@ MagicMirror² Module to display public transport from Ingolstadt in Germany.
 -   **customURL**: The URL to use if `overwriteIP` is `true`.
 -   **customPort**: The port to use if `overwriteIP` is `true`.
 
+### Finding the Station ID
+
+To find the **Station ID**, follow these steps:
+
+1. Go to [https://www.invg.de/echtzeit](https://www.invg.de/echtzeit) and enter the name of the station.
+2. Select the desired station from the list.
+3. Retrieve the Station ID from the URL as follows:
+
+   In the URL `https://www.invg.de/rt/showMultiple.action?station=IN-Hbf&stopPoint=1&menuId=1493&sid=240&locale=de`, the Station ID is the value between `?station=` and the next `&`. For this example, the **Station ID** is `IN-Hbf`.
+
+4. Use this ID in the `station` field in the `config.js` configuration for the module.
+
+
 #### Why use `overwriteIP`?
 
 The `overwriteIP` setting is helpful if the MagicMirror's automatic IP and port detection does not work as expected. By default, the module attempts to detect and use the MagicMirror's IP and port for the API request. However, in certain network setups or configurations, the automatic detection may fail. Enabling `overwriteIP` allows you to manually specify a custom URL and port for the CORS request, ensuring that the module can still retrieve the required data without issues.
