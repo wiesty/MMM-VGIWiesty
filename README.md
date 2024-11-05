@@ -1,4 +1,4 @@
-# MMM-VGIWiesty [![GitHub license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey.svg)](https://github.com/wiesty/MMM-VGIWiesty/raw/master/LICENSE) <img src="https://img.shields.io/badge/Maintained%3F-supported, but not actively developed-orange.svg"/>
+# MMM-VGIWiesty [![GitHub license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey.svg)](https://raw.githubusercontent.com/wiesty/MMM-VGIWiesty/refs/heads/main/LICENSE) <img src="https://img.shields.io/badge/Maintained%3F-supported, but not actively developed-orange.svg"/>
 
 MagicMirror² Module to display public transport from Ingolstadt in Germany.
 
